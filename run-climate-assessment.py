@@ -1,3 +1,4 @@
+import sys
 import warnings
 
 from pathlib import Path
@@ -8,6 +9,8 @@ from climate_assessment.cli import run_workflow
 warnings.simplefilter(action="ignore", category=FutureWarning)
 
 root = Path(__file__).parent
+
+scenario_file = root / sys.argv[1]
 
 fair_slim_filename = "fair-1.6.2-wg3-params-slim.json"
 fair_common_filename = "fair-1.6.2-wg3-params-common.json"
@@ -46,16 +49,15 @@ num_cfgs = 2237
 
 scenario_batch_size = 1
 
-for scenario in (root / "scenarios").glob("*.csv"):
-    input_emissions_file = str(scenario)
+input_emissions_file = str(scenario_file)
 
-    outdir = root / "output" / scenario.stem
-    outdir.mkdir(parents=True, exist_ok=True)
+outdir = root / "output" / scenario_file.stem
+outdir.mkdir(parents=True, exist_ok=True)
 
-    if (outdir / f"{scenario.stem}_IAMC_climateassessment0000.csv").exists():
-        continue
-
-    print("Processing scenario file:", scenario.name)
+if (outdir / f"{scenario_file.stem}_IAMC_climateassessment0000.csv").exists():
+    print(f"Output data for {scenario_file.name} already exists.")
+else:
+    print("Processing scenario file:", scenario_file.name)
 
     run_workflow(
         input_emissions_file,
