@@ -36,9 +36,10 @@ jobs:
       with:
         commit_message: "Add output data"
 
-        # Keep only CSV, ignoring XLSX
-        file_pattern: '*.csv'
+        # Keep only CSV file with results, ignoring XLSX and other CSVs for now
+        file_pattern: '*IAMC*.csv'
 
         # Optional commit user and author settings
         commit_user_name: Climate Assessment Bot # defaults to "github-actions[bot]"
         commit_user_email: "<>"
+        commit_author: "Climate Assessment Bot <>"
